@@ -123,7 +123,7 @@ with open("README.md", encoding="utf-8") as f:
 
 setup(
     name="cv2-ffmpeg_streaming",
-    version="1.0.0",
+    version="1.0.1",
     description="Simple ffmpeg streaming util for opencv2",
     long_description=readme,
     long_description_content_type="text/markdown",
