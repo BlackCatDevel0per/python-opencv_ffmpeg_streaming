@@ -1,33 +1,64 @@
-# opencv_ffmpeg_streaming
-rtmp streaming from opencv with ffmpeg / avcodec
+# face-recognition-system
+Simple face recognition system
 
-Using ffmpeg libraries from C/C++ is tricky and I could not easily find easy examples without memory leaks or bad crashes that used OpenCV as input or for image processing.
-This is an example for using the ffmpeg and opencv libraries from C++ for rtmp streaming. 
-The input is from the OpenCV VideoCapture class.
-To build Release:
+## Installation
 ```
-$ mkdir build
-$ cd build
-$ cmake -DCMAKE_BUILD_TYPE=Release ..
-$ make
+pip install cv2-ffmpeg_streaming 
+```
+or
+```
+python setup.py install
 ```
 
-To build Debug:
+## Install requirements
 ```
-$ mkdir build
-$ cd build
-$ cmake -DCMAKE_BUILD_TYPE=Debug ..
-$ make
-```
-In main.cpp the stream url is defined as "rtmp://localhost/live/mystream" and must be adapted to your rtmp server settings
-
-Run the program on a video:
-```
-$ ./build/simple_opencv_streaming <video_file>
-```
-From camera
-```
-$ ./build/simple_opencv_streaming 0
+sudo apt-get install libboost-numpy-dev
 ```
 
-To convert the rtmp stream to HLS and publish the stream to a browser I have written a tutorial on  <a href="https://www.nobile-engineering.com/wordpress/index.php/2018/10/30/video-streaming-hls-apache-nginx/"> a blog post </a> 
+# Examples in tests directory
+```
+import cv2
+import time
+from rtmp_streaming import StreamerConfig, Streamer
+
+cap = cv2.VideoCapture(0)
+# run "ffplay -listen 1 -i 'rtmp://127.0.0.1:8000/stream' to display
+ret, frame = cap.read()
+
+sc = StreamerConfig()
+sc.source_width = frame.shape[1]
+sc.source_height = frame.shape[0]
+sc.stream_width = 640
+sc.stream_height = 480
+sc.stream_fps = 20
+sc.stream_bitrate = 1000000
+sc.stream_profile = 'main' #'high444' # 'main'
+sc.stream_server = 'rtmp://127.0.0.1:8000/stream'
+
+
+streamer = Streamer()
+streamer.init(sc)
+#streamer.enable_av_debug_log()
+
+
+prev = time.time()
+
+show_cap = True
+
+while(True):
+
+    ret, frame = cap.read()
+    now = time.time()
+    duration = now - prev
+    streamer.stream_frame_with_duration(frame, int(duration*100)) #0
+    prev = now
+    #if show_cap:
+    #    cv2.imshow('frame', frame)
+    #    if cv2.waitKey(1) & 0xFF == ord('q'):
+    #        break
+
+
+cap.release()
+#if show_cap:
+#    cv2.destroyAllWindows()
+```
