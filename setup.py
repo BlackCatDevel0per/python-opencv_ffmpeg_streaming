@@ -118,14 +118,19 @@ class CMakeBuild(build_ext):
             ["cmake", "--build", "."] + build_args, cwd=self.build_temp
         )
 
-
+def dirs(dir: str, recursive: bool=True):
+    l = glob("rtmp_streaming/**/*", recursive=True)
+    for p in l:
+        if os.path.isdir(p):
+            l.remove(p)
+    return l
 
 with open("README.md", encoding="utf-8") as f:
     readme = f.read()
 
 setup(
     name="cv2-ffmpeg_streaming",
-    version="1.0.3",
+    version="1.0.4",
     description="Simple ffmpeg streaming util for opencv2",
     long_description=readme,
     long_description_content_type="text/markdown",
@@ -167,7 +172,7 @@ setup(
 
     packages=find_packages(),
 
-    data_files=[("rtmp_streaming", glob("rtmp_streaming/**/*")), ("rtmp_streaming", ["CMakeLists.txt"])],
+    data_files=[("rtmp_streaming", dirs("rtmp_streaming/**/*", recursive=True)), ("rtmp_streaming", ["CMakeLists.txt"])],
     
     ext_modules=[CMakeExtension("rtmp_streaming")],
     cmdclass={"build_ext": CMakeBuild},
