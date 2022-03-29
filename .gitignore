@@ -1,3 +1,5 @@
+cv2_ffmpeg_streaming.egg-info/
+dist/
 venv/
 tmp/
 __pycache__
