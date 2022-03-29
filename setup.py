@@ -118,8 +118,8 @@ class CMakeBuild(build_ext):
             ["cmake", "--build", "."] + build_args, cwd=self.build_temp
         )
 
-def dirs(dir: str, recursive: bool=True):
-    l = glob("rtmp_streaming/**/*", recursive=True)
+def get_files(gdir: str, recursive: bool=True):
+    l = glob(gdir, recursive=recursive)
     for p in l:
         if os.path.isdir(p):
             l.remove(p)
@@ -172,7 +172,7 @@ setup(
 
     packages=find_packages(),
 
-    data_files=[("rtmp_streaming", dirs("rtmp_streaming/**/*", recursive=True)), ("rtmp_streaming", ["CMakeLists.txt"])],
+    data_files=[("rtmp_streaming", get_files("rtmp_streaming/**/*", recursive=True)), ("rtmp_streaming", ["CMakeLists.txt"])],
     
     ext_modules=[CMakeExtension("rtmp_streaming")],
     cmdclass={"build_ext": CMakeBuild},
