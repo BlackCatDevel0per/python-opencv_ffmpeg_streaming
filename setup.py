@@ -129,7 +129,7 @@ setup(
     description="Simple ffmpeg streaming util for opencv2",
     long_description=readme,
     long_description_content_type="text/markdown",
-    url="https://github.com/BlackCatDevel0per",
+    url="https://github.com/BlackCatDevel0per/python-opencv_ffmpeg_streaming",
     download_url="https://github.com/BlackCatDevel0per/python-opencv_ffmpeg_streaming",
     author="bcdev",
     author_email="bcdev@mail.ru",

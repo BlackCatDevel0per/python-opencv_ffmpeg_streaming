@@ -7,6 +7,8 @@ pip install cv2-ffmpeg_streaming
 ```
 or
 ```
+git clone https://github.com/BlackCatDevel0per/python-opencv_ffmpeg_streaming
+cd python-opencv_ffmpeg_streaming
 python setup.py install
 ```
 
